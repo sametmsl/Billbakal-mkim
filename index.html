@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bil Bakalım Kim?</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .card {
+      background-color: #fff;
+      border: 2px solid #333;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .card.hidden {
+      background-color: #999;
+      color: #999;
+      border: 2px solid #999;
+      cursor: default;
+    }
+    .card:hover:not(.hidden) {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bil Bakalım Kim?</h1>
+  <p>Bir karakteri aklınızda tutun ve diğer oyuncu tahmin etmeye çalışsın!</p>
+  <div class="grid" id="characterGrid"></div>
+
+  <script>
+    const characters = [
+      "Hayri", "Akın", "Mert", "Kâmil", "Sevim", "Hale", "Basri Amca",
+      "Şakir", "Canan", "Remzi", "Kadriye", "Necati", "Mirket",
+      "Keloğlan", "Cankız", "Vezir", "Padişah", "Annesi", "Kara Vezir", "Ali"
+    ];
+
+    const grid = document.getElementById("characterGrid");
+
+    characters.forEach(name => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.textContent = name;
+      card.onclick = () => {
+        card.classList.toggle("hidden");
+      };
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
