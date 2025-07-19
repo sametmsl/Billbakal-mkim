@@ -6,44 +6,65 @@
   <title>Bil Bakalım Kim?</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       text-align: center;
-      background-color: #f4f4f4;
+      background-color: #f0f8ff;
       padding: 20px;
     }
     h1 {
-      color: #333;
+      color: #4a4a4a;
+      font-size: 2em;
+      margin-bottom: 10px;
     }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       gap: 10px;
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto;
     }
     .card {
       background-color: #fff;
       border: 2px solid #333;
-      padding: 10px;
-      border-radius: 10px;
+      border-radius: 15px;
+      padding: 5px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 10px;
     }
     .card.hidden {
-      background-color: #999;
-      color: #999;
-      border: 2px solid #999;
+      opacity: 0.2;
       cursor: default;
     }
     .card:hover:not(.hidden) {
-      background-color: #ddd;
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
   <h1>Bil Bakalım Kim?</h1>
-  <p>Bir karakteri aklınızda tutun ve diğer oyuncu tahmin etmeye çalışsın!</p>
+  <button id="startBtn">Rastgele Karakter Seç</button>
+  <p id="selectedCharacter">Bir karakter seçilecek...</p>
   <div class="grid" id="characterGrid"></div>
+
+  <audio id="clickSound" src="https://www.soundjay.com/button/button-16.mp3" preload="auto"></audio>
 
   <script>
     const characters = [
@@ -52,17 +73,42 @@
       "Keloğlan", "Cankız", "Vezir", "Padişah", "Annesi", "Kara Vezir", "Ali"
     ];
 
-    const grid = document.getElementById("characterGrid");
+    const images = characters.map(name =>
+      `https://via.placeholder.com/100x100.png?text=${encodeURIComponent(name)}`
+    );
 
-    characters.forEach(name => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.textContent = name;
-      card.onclick = () => {
-        card.classList.toggle("hidden");
-      };
-      grid.appendChild(card);
-    });
+    const grid = document.getElementById("characterGrid");
+    const sound = document.getElementById("clickSound");
+    const selectedDisplay = document.getElementById("selectedCharacter");
+    const startBtn = document.getElementById("startBtn");
+
+    function createGrid() {
+      grid.innerHTML = "";
+      characters.forEach((name, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const img = document.createElement("img");
+        img.src = images[index];
+        img.alt = name;
+
+        card.appendChild(img);
+        card.onclick = () => {
+          if (!card.classList.contains("hidden")) {
+            card.classList.add("hidden");
+            sound.play();
+          }
+        };
+        grid.appendChild(card);
+      });
+    }
+
+    startBtn.onclick = () => {
+      const random = characters[Math.floor(Math.random() * characters.length)];
+      selectedDisplay.textContent = `Bil bakalım kim? Benim karakterim: ${random}`;
+    };
+
+    createGrid();
   </script>
 </body>
 </html>
